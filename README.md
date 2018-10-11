@@ -10,15 +10,19 @@ CREATE DATABASE bchat;
 ```SQL
 CREATE USER 'bchatadmin'@'localhost' IDENTIFIED BY 'adminbchat';
 ````
-4. Grant the bChat database user the required permissions in the MySQL console using 
+4. Mac users need to run one more command in the MySQL console to allow Laravel to connect using:
+```SQL
+ALTER USER 'bchatadmin'@'localhost' IDENTIFIED WITH mysql_native_password BY 'adminbchat';
+```
+5. Grant the bChat database user the required permissions in the MySQL console using 
 ```SQL
 GRANT ALL PRIVILEGES ON bchat.* TO 'bchatadmin'@'localhost';
 ```
-5. Install the project dependencies using 
+6. Install the project dependencies using 
 ```bash
 composer install
 ```
-6. Install the  initial database migrations using 
+7. Install the  initial database migrations using 
 ```bash
 php artisan migrate:install
 ```
