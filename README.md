@@ -1,7 +1,13 @@
 # bChat
+To fill the desire for simplicity and security in users who have grown weary of convoluted modern communication software by providing a fast, simple, and secure solution.
+
+## Requirements
+1. composer `brew install composer`
+2. php `brew install php` and `brew services start php` to start the service
+3. mySQL `brew install mysql` and `brew services start mysql` to start the service
 
 ## Setup Guide
-1. Ensure that MySQL is running
+1. Ensure that MySQL is running by using `brew services list`
 2. Create the bChat database in the MySQL console using: 
 ```SQL
 CREATE DATABASE bchat;
