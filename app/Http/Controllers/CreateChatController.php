@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use App\User;
-
-use App\Http\Requests\CreateChatRequest;
 use App\Chat;
+use App\Http\Requests\CreateChatRequest;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 
 class CreateChatController extends Controller
 {
@@ -38,6 +37,6 @@ class CreateChatController extends Controller
                 'delete_at' => date('Y-m-d H:i:s', strtotime($validatedData['delete_at']))
             ]);
 
-        return $validatedData;
+        return response()->json(['success' => 'The chat session was successfully created.']);
     }
 }
