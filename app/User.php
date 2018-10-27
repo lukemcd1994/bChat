@@ -2,13 +2,17 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     use Notifiable;
+
+    public function chats() {
+
+        return $this->hasMany('App\Chat', 'user1_id')->orWhere('user2_id', $this->id);
+    }
 
     /**
      * The attributes that are mass assignable.

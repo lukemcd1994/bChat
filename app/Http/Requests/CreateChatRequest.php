@@ -38,7 +38,7 @@ class CreateChatRequest extends FormRequest
                 Rule::exists('users', 'name')->whereNot('name', Auth::user()->name)
 
             ],
-            'delete_at' => 'required|date|after:' . strtotime('now')
+            'delete_at' => 'required|date|after:now'
         ];
     }
 }
