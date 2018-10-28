@@ -3892,6 +3892,11 @@ laravel-echo-server@^1.4.2:
     socket.io "^2.1.1"
     yargs "^5.0.0"
 
+laravel-echo@^1.4.0:
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/laravel-echo/-/laravel-echo-1.4.0.tgz#19520b142871f6c641bbdc1ece0b7b12a3a8381b"
+  integrity sha512-O0vkToCCpxuH9dYAlugTLQzG0BmxvGrjXim0LHZ0VPsFu/Y+sXnV9GvYbmcBq1rcJymQc/6GHMUCDY01lN26lQ==
+
 laravel-mix@^2.0:
   version "2.1.14"
   resolved "https://registry.yarnpkg.com/laravel-mix/-/laravel-mix-2.1.14.tgz#5c3c778b888e21120aa9d8900c318411da2ec911"
@@ -6264,7 +6269,7 @@ socket.io-adapter@~1.1.0:
   resolved "https://registry.yarnpkg.com/socket.io-adapter/-/socket.io-adapter-1.1.1.tgz#2a805e8a14d6372124dd9159ad4502f8cb07f06b"
   integrity sha1-KoBeihTWNyEk3ZFZrUUC+MsH8Gs=
 
-socket.io-client@2.1.1:
+socket.io-client@2.1.1, socket.io-client@^2.1.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/socket.io-client/-/socket.io-client-2.1.1.tgz#dcb38103436ab4578ddb026638ae2f21b623671f"
   integrity sha512-jxnFyhAuFxYfjqIgduQlhzqTcOEQSn+OHKVfAxWaNWa7ecP7xSNk2Dx/3UEsDcY7NcFafxvNvKPmmO7HTwTxGQ==
