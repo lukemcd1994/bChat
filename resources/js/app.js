@@ -18,5 +18,12 @@ window.Vue = require('vue');
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    mounted: function () {
+
+        window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content)
+            .listen('NewChatRequest', (e) => {
+                console.log(e);
+            });
+    },
 });
