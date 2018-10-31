@@ -15,8 +15,8 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('chat-component', require('./components/ChatComponent.vue'));
-Vue.component('user-component', require('./components/UserComponent.vue'));
+Vue.component('current-chat-component', require('./components/CurrentChatComponent.vue'));
+Vue.component('chats-component', require('./components/ChatsComponent.vue'));
 Vue.component('chat-messages-component', require('./components/ChatMessagesComponent.vue'));
 Vue.component('chat-form-component', require('./components/ChatFormComponent.vue'));
 Vue.component('message-component', require('./components/MessageComponent.vue'));
@@ -30,4 +30,20 @@ const app = new Vue({
                 console.log(e);
             });
     },
+});
+
+const ChatsSidebar = new Vue({
+	el: '#chats',
+	data: {
+		chats: []
+	},
+	mounted () {
+		this.getChats();
+	},
+	methods: {
+		getChats(){
+			this.chats = axios({url: 'http://127.0.0.1:8000/chats', method: 'get'}).then(response => {return response.data})
+			console.log(this.chats)
+		}
+	}
 });
