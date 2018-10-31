@@ -1,0 +1,39 @@
+.navbar-laravel {
+  background-color: #2F4F4F !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+.btn[type="submit"]{
+	background-color: #2F4F4F !important;
+	border: 0px;
+}
+
+.btn[type="submit"]:hover{
+	background-color: #778899 !important;
+}
+
+
+.nav-link{
+	color: #fff !important;
+}
+
+.nav-link:hover{
+	color: #778899 !important;
+}
+
+.navbar-brand{
+	color: #fff !important;
+}
+
+.card-header{
+	background-color: #2F4F4F !important;
+	color: #fff;
+}
+
+.card-body{
+	background-color: #D3D3D3;
+}
+
+body{
+	background-color: #778899 !important;
+}
