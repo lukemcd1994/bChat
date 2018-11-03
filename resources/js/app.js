@@ -31,19 +31,3 @@ const app = new Vue({
             });
     },
 });
-
-const ChatsSidebar = new Vue({
-	el: '#chats',
-	data: {
-		chats: []
-	},
-	mounted () {
-		this.getChats();
-	},
-	methods: {
-		getChats(){
-			this.chats = axios({url: 'http://127.0.0.1:8000/chats', method: 'get'}).then(response => {return response.data})
-			console.log(this.chats)
-		}
-	}
-});
