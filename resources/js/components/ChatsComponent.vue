@@ -3,12 +3,10 @@
         <div class="card">
             <div class="card-header">Chats</div>
             <div class="card-body">
-                <ul>
-									<li v-for="chat in chats">
-										{{chat.with}}
-										{{chat.delete_at}}
-									</li>
-								</ul>
+                <div class="list-group">
+                    <button v-for="chat in chats.data" class="list-group-item list-group-item-action">Chat ID {{chat.id}} with {{chat.with}} expires at {{chat.delete_at}}
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -16,8 +14,23 @@
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
+        data: function () {
+            return {
+                chats: []
+            }
+        },
+        mounted () {
+            this.getChats();
+        },
+        methods: {
+            getChats() {
+                axios({
+                    url: 'http://127.0.0.1:8000/chats',
+                    method: 'get'
+                }).then(response => {
+                    this.chats = response.data;
+                });
+            }
         }
     }
 </script>
