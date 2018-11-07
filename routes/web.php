@@ -22,3 +22,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('chats', 'ChatSessionController', [
     'only' => ['index', 'store']
 ]);
+
+Route::view('/newchat', 'newChat');
+Route::view('/chatcreated', 'chatCreated');

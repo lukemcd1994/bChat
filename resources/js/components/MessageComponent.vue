@@ -2,18 +2,27 @@
 
 <template>
     <div class="message self">
-        <strong class="user" id="username">davenportmw</strong>
+        <strong class="user" id="username">{{username}}</strong>
         <p class="body">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam cumque quaerat rem quia veniam exercitationem, commodi numquam omnis! Non placeat perspiciatis nulla illum cumque ad natus asperiores fuga. Facere, dignissimos.</p>
     </div>
 </template>
 
 <script>
-    export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
-    }
-		//document.head.querySelector('meta[name="username"]').content
+export default {
+		data: function () {
+				return {
+						username: ""
+				}
+		},
+		mounted () {
+				this.getUsername();
+		},
+		methods: {
+				getUsername() {
+						this.username = document.head.querySelector('meta[name="username"]').content;
+				}
+		}
+}
 </script>
 
 <style>

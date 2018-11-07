@@ -20,6 +20,8 @@ Vue.component('chats-component', require('./components/ChatsComponent.vue'));
 Vue.component('chat-messages-component', require('./components/ChatMessagesComponent.vue'));
 Vue.component('chat-form-component', require('./components/ChatFormComponent.vue'));
 Vue.component('message-component', require('./components/MessageComponent.vue'));
+Vue.component('new-chat-component', require('./components/NewChatComponent.vue'));
+Vue.component('chat-created-component', require('./components/ChatCreatedComponent.vue'));
 
 const app = new Vue({
     el: '#app',
@@ -30,4 +32,32 @@ const app = new Vue({
                 console.log(e);
             });
     },
+		data: {
+
+			//isVisible: true,
+			compArray: ['chats-component', 'current-chats-component']
+
+		}
 });
+
+// new Vue({
+//   el: 'body',
+//   data: {
+//     currentComponent: null,
+//     componentsArray: ['foo', 'bar']
+//   },
+//   components: {
+//     'foo': {
+//       template: '<h1>Foo component</h1>'
+//     },
+//     'bar': {
+//       template: '<h1>Bar component</h1>'
+//     }
+//   },
+//   methods: {
+//     swapComponent: function(component)
+//     {
+//       this.currentComponent = component;
+//     }
+//   }
+// });
