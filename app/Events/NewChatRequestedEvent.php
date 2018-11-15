@@ -2,30 +2,31 @@
 
 namespace App\Events;
 
-use Illuminate\Broadcasting\Channel;
 use App\User;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
-class NewChatRequest implements ShouldBroadcast
+class NewChatRequestedEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $user;
+    private $user;
+    private $chatData;
 
     /**
      * Create a new event instance.
      *
      * @param  \App\User $user
+     * @param array $chatData
      * @return void
      */
-    public function __construct(User $user)
+    public function __construct(User $user, array $chatData)
     {
         $this->user = $user;
+        $this->chatData = $chatData;
     }
 
     /**
@@ -45,7 +46,6 @@ class NewChatRequest implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        //TODO Implement key exchange and "renegotiation" if the receiving user doesn't like the expire time
-        return [];
+        return $this->chatData;
     }
 }

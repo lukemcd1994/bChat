@@ -9,6 +9,10 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import VModal from 'vue-js-modal'
+
+Vue.use(VModal);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -20,14 +24,20 @@ Vue.component('chats-component', require('./components/ChatsComponent.vue'));
 Vue.component('chat-messages-component', require('./components/ChatMessagesComponent.vue'));
 Vue.component('chat-form-component', require('./components/ChatFormComponent.vue'));
 Vue.component('message-component', require('./components/MessageComponent.vue'));
+Vue.component('accept-chat-modal', require('./components/AcceptChatModal.vue'));
+
+const EventBus = new Vue();
+
+Object.defineProperties(Vue.prototype, {
+    $bus: {
+        get: function () {
+            return EventBus
+        }
+    }
+});
 
 const app = new Vue({
     el: '#app',
     mounted: function () {
-
-        window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content)
-            .listen('NewChatRequest', (e) => {
-                console.log(e);
-            });
     },
 });

@@ -23,6 +23,16 @@
 
         mounted () {
             this.getChats();
+
+            this.$bus.$on('user-accepted-chat', chatData => {
+                this.chats.data.push(chatData);
+            });
+
+            window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content).listen('ChatAcceptedEvent',
+                (e) => {
+                    console.log(e);
+                    this.chats.data.push(e);
+                });
         },
 
         methods: {
