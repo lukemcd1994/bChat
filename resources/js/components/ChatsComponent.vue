@@ -5,7 +5,7 @@
             <div class="card-body">
 								<div class="row justify-content-center">
 									<div class='col-xs-12'>
-										<button class="btn btn-primary" @click="">New Chat</button>
+										<button class="btn btn-primary" @click="$bus.$emit('button-click-1')">New Chat</button>
 									</div>
 								</div>
 								<br>
@@ -38,6 +38,7 @@
                     this.chats = response.data;
                 });
             }
+
         }
     }
 </script>

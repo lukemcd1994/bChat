@@ -19,7 +19,7 @@
 							<br>
 							<div class="row justify-content-center">
 								<div class='col-xs-12'>
-									<button class="btn btn-primary" @click="">Create Chat</button>
+									<button class="btn btn-primary" @click.prevent="$bus.$emit('button-click-2')">Create Chat</button>
 								</div>
 							</div>
 						</form>
@@ -29,9 +29,9 @@
 </template>
 
 <script>
-    export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
-    }
+	export default {
+			methods: {
+
+			}
+	}
 </script>

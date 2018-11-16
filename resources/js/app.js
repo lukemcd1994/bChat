@@ -6,9 +6,16 @@
  */
 
 require('./bootstrap');
-
 window.Vue = require('vue');
+const EventBus = new Vue();
 
+Object.defineProperties(Vue.prototype, {
+    $bus: {
+        get: function () {
+            return EventBus
+        }
+    }
+});
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -24,40 +31,34 @@ Vue.component('new-chat-component', require('./components/NewChatComponent.vue')
 Vue.component('chat-created-component', require('./components/ChatCreatedComponent.vue'));
 
 const app = new Vue({
-    el: '#app',
+    el: '#root',
     mounted: function () {
 
-        window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content)
-            .listen('NewChatRequest', (e) => {
-                console.log(e);
-            });
+				window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content)
+						.listen('NewChatRequest', (e) => {
+						console.log(e);
+				});
+
+				this.$bus.$on('button-click-1', eventData => {
+						this.currentChatVisible = false;
+						this.newChatVisible = true;
+				});
+
+				this.$bus.$on('button-click-2', eventData => {
+						this.newChatVisible = false;
+						this.chatCreatedVisible = true;
+				});
+
     },
 		data: {
 
-			//isVisible: true,
-			compArray: ['chats-component', 'current-chats-component']
+			chatsVisible: true,
+			currentChatVisible: true,
+			newChatVisible: false,
+			chatCreatedVisible: false
+
+		},
+		methods: {
 
 		}
 });
-
-// new Vue({
-//   el: 'body',
-//   data: {
-//     currentComponent: null,
-//     componentsArray: ['foo', 'bar']
-//   },
-//   components: {
-//     'foo': {
-//       template: '<h1>Foo component</h1>'
-//     },
-//     'bar': {
-//       template: '<h1>Bar component</h1>'
-//     }
-//   },
-//   methods: {
-//     swapComponent: function(component)
-//     {
-//       this.currentComponent = component;
-//     }
-//   }
-// });
