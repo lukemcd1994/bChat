@@ -11,7 +11,7 @@ class User extends Authenticatable
 
     public function chats() {
 
-        return $this->hasMany('App\Chat', 'user1_id')->orWhere('user2_id', $this->id);
+        return $this->hasMany('App\Chat', 'user1_id')->where('pending', 0)->orWhere('user2_id', $this->id)->where('pending', 0);
     }
 
     /**

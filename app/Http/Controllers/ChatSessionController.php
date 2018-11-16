@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Chat;
+use App\Events\ChatAcceptedEvent;
 use App\Http\Requests\CreateChatRequest;
 use App\Http\Resources\ChatCollection;
 use App\User;
+use App\Events\NewChatRequestedEvent;
 use Illuminate\Support\Facades\Auth;
 
 class ChatSessionController extends Controller
@@ -40,18 +42,67 @@ class ChatSessionController extends Controller
     {
         $validatedData = $request->validated();
 
-        // TODO Setup key exchange before creating the chat model
+        if (!(array_key_exists('pending_method', $validatedData))) {
 
-        $newChat = Chat::create([
+            $newChat = Chat::create([
                 'user1_id' => Auth::user()->id,
                 'user2_id' => User::where('name', $validatedData['user2_name'])->value('id'),
-                'delete_at' => date('Y-m-d H:i:s', strtotime($validatedData['delete_at']))
+                'delete_at' => date('Y-m-d H:i:s', strtotime($validatedData['delete_at'])),
+                'pending' => 1,
+                'pending_secret' => uniqid('', true)
             ]);
 
-        return response()->json([
-            'status' => 'success',
-            'message' => 'The chat session was successfully created.',
-            'chat_id' => $newChat->id
-        ]);
+            event(new NewChatRequestedEvent(
+                User::findOrFail(User::where('name', $validatedData['user2_name'])->value('id')),
+                [
+                    'pending_id' => $newChat->id,
+                    'with' => Auth::user()->name,
+                    'pending_secret' => $newChat->pending_secret,
+                    'delete_at' => $newChat->delete_at
+                ]
+            ));
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'The chat request was successfully sent.',
+                'pending_id' => $newChat->id
+            ]);
+        }
+        else {
+
+            if ($validatedData["pending_method"] === "accept") {
+                Chat::find($validatedData["pending_id"])->update(array('pending' => 0));
+
+                event(new ChatAcceptedEvent(
+                    User::findOrFail(User::where('name', $validatedData['user2_name'])->value('id')),
+                    [
+                        'id' => $validatedData['pending_id'],
+                        'delete_at' => date('Y-m-d H:i:s', strtotime($validatedData['delete_at'])),
+                        'with' => Auth::user()->name,
+                    ]
+                ));
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'The chat request was accepted.',
+                ]);
+            }
+            else if ($validatedData["pending_method"] === "decline") {
+
+                Chat::find($validatedData["pending_id"])->delete();
+
+                return response()->json([
+                    'status' => 'success',
+                    'message' => 'The chat request was declined.',
+                ]);
+            }
+            else {
+
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Invalid pending_method was received!',
+                ], 422);
+            }
+        }
     }
 }
