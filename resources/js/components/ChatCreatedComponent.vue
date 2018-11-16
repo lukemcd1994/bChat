@@ -7,7 +7,7 @@
 								<br><br>
 								<div class="row justify-content-center">
 									<div class='col-xs-12'>
-										<button class="btn btn-primary" @click="">Ok</button>
+										<button class="btn btn-primary" @click.prevent="$bus.$emit('button-click-3')">Ok</button>
 									</div>
 								</div>
             </div>

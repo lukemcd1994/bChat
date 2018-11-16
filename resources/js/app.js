@@ -49,6 +49,11 @@ const app = new Vue({
 						this.chatCreatedVisible = true;
 				});
 
+				this.$bus.$on('button-click-3', eventData => {
+						this.chatCreatedVisible = false;
+						this.currentChatVisible = true;
+				});
+
     },
 		data: {
 
