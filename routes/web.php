@@ -22,10 +22,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::resource('chats', 'ChatSessionController', [
     'only' => ['index', 'store']
 ]);
-//
-//Route::resource('/messages', 'MessageController', [
-//    'only' => ['index', 'store']
-//]);
 
 Route::post('/send', 'MessageController@store');
 Route::post('/messages', 'MessageController@index');
