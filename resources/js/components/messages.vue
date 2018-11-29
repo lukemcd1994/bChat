@@ -15,7 +15,6 @@
         mounted() {
             console.log('Component mounted.');
 
-
             this.$bus.$on('chat-switched', chat => {
                 console.log(chat.id);
                 this.getChatMessages(chat.id);
@@ -26,9 +25,8 @@
                 this.$bus.$emit('send-message', {with: this.currentChatUsername, chat_id: this.currentChatID});
             });
             this.$bus.$on('message-sent', data => {
-                var temp = {message_body: data};
+                let temp = {message_body: data};
                 this.messages.data.push(temp);
-                // this.$bus.$emit('send-message', {with: this.currentChatUsername, chat_id: this.currentChatID});
             });
 
             window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content).listen('NewMessage', (e) => {
@@ -44,22 +42,18 @@
             }
         },
         methods: {
-            getChatMessages(chatID){ 
+            getChatMessages(chatID){
                 axios({
-                  url: 'http://127.0.0.1:8000/messages',
-                  method: 'post',
-                  data: {
+                    url: 'http://127.0.0.1:8000/messages',
+                    method: 'post',
+                    data: {
                     chat_id: chatID
-                  },
-            }).then(response => {
+                    },
+                }).then(response => {
                     this.messages = response.data;
                     console.log(this.messages);
-            });
-                // this.messages
+                });
             }
         }
-
     }
-
-
 </script>

@@ -12,10 +12,6 @@ window.Vue = require('vue');
 import VModal from 'vue-js-modal'
 Vue.use(VModal);
 
-
-
-
-
 const EventBus = new Vue();
 
 Object.defineProperties(Vue.prototype, {
@@ -41,30 +37,17 @@ Vue.component('chats-component', require('./components/chats.vue'));
 Vue.component('new-chat-component', require('./components/new-chat.vue'));
 Vue.component('header-buttons-component', require('./components/header-buttons.vue'));
 
-// // modal components
+// modal components
 Vue.component('accept-chat-modal', require('./components/AcceptChatModal.vue'));
 
 const app = new Vue({
     el: '#root', // for some reason this was app and not root
     mounted: function () {
 
-				console.log('Test message');
-				
-				this.$bus.$on('button-click-1', eventData => {
-						this.chatListVisible = false;
-						this.newChatVisible = true;
-						this.chatRequestVisible = false;
-				});
-
     },
-		data: {
-
-			chatListVisible: true,
-			newChatVisible: false,
-			chatRequestVisible: false
-
-		},
-		methods: {
-
-		}
+    data: {
+        chatListVisible: true,
+        newChatVisible: false,
+        chatRequestVisible: false
+    }
 });
