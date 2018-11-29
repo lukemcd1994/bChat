@@ -29,9 +29,7 @@
         },
         mounted () {
 
-            console.log("AcceptChatModal mountedssss...");
-
-            //this.showModal();
+            console.log("AcceptChatModal mounted");
 
             window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content).listen('NewChatRequestedEvent',
                 (e) => {

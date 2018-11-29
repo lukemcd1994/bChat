@@ -3,8 +3,8 @@
 <template>
     <div class="messages">
         <ul>
-        	<li v-for="message in messages.data" class="sent">
-        		<p>{{message.message_body}}</p>
+        	<li v-for="message in messages.data" v-bind:class="{'sent': JSON.parse(message.message_body).receiver === currentChatUsername, 'received': JSON.parse(message.message_body).receiver !== currentChatUsername}">
+        		<p>{{JSON.parse(message.message_body).body}}</p>
         	</li>
         </ul>
     </div>
@@ -14,7 +14,6 @@
     export default {
         mounted() {
             console.log('Component mounted.');
-
 
             this.$bus.$on('chat-switched', chat => {
                 console.log(chat.id);
@@ -26,14 +25,21 @@
                 this.$bus.$emit('send-message', {with: this.currentChatUsername, chat_id: this.currentChatID});
             });
             this.$bus.$on('message-sent', data => {
-                var temp = {message_body: data};
+                let temp = {message_body: data};
                 this.messages.data.push(temp);
-                // this.$bus.$emit('send-message', {with: this.currentChatUsername, chat_id: this.currentChatID});
             });
 
             window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content).listen('NewMessage', (e) => {
                     console.log(e);
-                    this.messages.data.push(e);
+
+                    if (this.currentChatID === e.chat_id) {
+
+                        this.messages.data.push(e);
+                    }
+                    else {
+
+                        //Probably need to add a notification bubble to the other chat to indicate an unread message
+                    }
             });
         },
         data:function(){
@@ -44,22 +50,18 @@
             }
         },
         methods: {
-            getChatMessages(chatID){ 
+            getChatMessages(chatID){
                 axios({
-                  url: 'http://127.0.0.1:8000/messages',
-                  method: 'post',
-                  data: {
+                    url: 'http://127.0.0.1:8000/messages',
+                    method: 'post',
+                    data: {
                     chat_id: chatID
-                  },
-            }).then(response => {
+                    },
+                }).then(response => {
                     this.messages = response.data;
                     console.log(this.messages);
-            });
-                // this.messages
+                });
             }
         }
-
     }
-
-
 </script>
