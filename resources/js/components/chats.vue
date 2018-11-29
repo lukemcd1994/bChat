@@ -1,26 +1,19 @@
+
+
 <template>
-    <div class="col-md-4" id="chats">
-        <div class="card">
-            <div class="card-header">Chats</div>
-            <div class="card-body">
-                <div class="list-group">
-                    <button v-for="chat in chats.data" class="list-group-item list-group-item-action">Chat ID {{chat.id}} with {{chat.with}} expires at {{chat.delete_at}}
-                    </button>
-                </div>
-            </div>
-        </div>
+    <div class="col-md-9">
+        <button v-for="chat in chats.data" type="button" class="btn chat-btn-inactive" @click="$bus.$emit('chat-switched', chat);">{{chat.with}}</button>
     </div>
 </template>
 
+
 <script>
     export default {
-
         data: function () {
             return {
                 chats: []
             }
         },
-
         mounted () {
             this.getChats();
 
@@ -32,9 +25,9 @@
                 (e) => {
                     console.log(e);
                     this.chats.data.push(e);
-                });
-        },
+            });
 
+        },
         methods: {
             getChats() {
                 axios({
@@ -44,6 +37,8 @@
                     this.chats = response.data;
                 });
             }
+
         }
     }
 </script>
+

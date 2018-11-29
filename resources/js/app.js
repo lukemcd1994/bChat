@@ -6,25 +6,15 @@
  */
 
 require('./bootstrap');
-
 window.Vue = require('vue');
 
-import VModal from 'vue-js-modal'
 
+import VModal from 'vue-js-modal'
 Vue.use(VModal);
 
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
 
-Vue.component('current-chat-component', require('./components/CurrentChatComponent.vue'));
-Vue.component('chats-component', require('./components/ChatsComponent.vue'));
-Vue.component('chat-messages-component', require('./components/ChatMessagesComponent.vue'));
-Vue.component('chat-form-component', require('./components/ChatFormComponent.vue'));
-Vue.component('message-component', require('./components/MessageComponent.vue'));
-Vue.component('accept-chat-modal', require('./components/AcceptChatModal.vue'));
+
+
 
 const EventBus = new Vue();
 
@@ -36,8 +26,45 @@ Object.defineProperties(Vue.prototype, {
     }
 });
 
+/**
+ * Next, we will create a fresh Vue application instance and attach it to
+ * the page. Then, you may begin adding components to this application
+ * or customize the JavaScript scaffolding to fit your unique needs.
+ */
+
+// better vues implementation
+Vue.component('main-component', require('./components/main.vue'));
+// Vue.component('header-component', require('./components/header.vue'));
+Vue.component('messages-component', require('./components/messages.vue'));
+Vue.component('compose-component', require('./components/compose.vue'));
+Vue.component('chats-component', require('./components/chats.vue'));
+Vue.component('new-chat-component', require('./components/new-chat.vue'));
+Vue.component('header-buttons-component', require('./components/header-buttons.vue'));
+
+// // modal components
+Vue.component('accept-chat-modal', require('./components/AcceptChatModal.vue'));
+
 const app = new Vue({
-    el: '#app',
+    el: '#root', // for some reason this was app and not root
     mounted: function () {
+
+				console.log('Test message');
+				
+				this.$bus.$on('button-click-1', eventData => {
+						this.chatListVisible = false;
+						this.newChatVisible = true;
+						this.chatRequestVisible = false;
+				});
+
     },
+		data: {
+
+			chatListVisible: true,
+			newChatVisible: false,
+			chatRequestVisible: false
+
+		},
+		methods: {
+
+		}
 });

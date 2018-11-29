@@ -10,7 +10,6 @@
             <p>{{withUser}} is requesting to chat with you. The chat will expire at {{deleteAt}}. Accept?</p>
             <br>
             <button type="button" class="btn btn-success" @click="accept">Accept</button>
-            <!--<button type="button" class="btn btn-primary">Renegotiate</button>-->
             <button type="button" class="btn btn-danger" @click="decline">Decline</button>
         </div>
     </modal>
@@ -29,6 +28,8 @@
             }
         },
         mounted () {
+
+            console.log("AcceptChatModal mountedssss...");
 
             //this.showModal();
 
@@ -73,6 +74,7 @@
                 }).then(response => {
 
                     this.canClose = true;
+                    // emit message to show 
                     this.$bus.$emit('user-accepted-chat', {"delete_at": this.deleteAt, "id": this.pendingID, "with": this.withUser});
                     this.$modal.hide('accept-chat-modal')
                 });

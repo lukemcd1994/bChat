@@ -1,5 +1,14 @@
+/* login page css */
+
+.form-group label {
+	color: $dark-text-color;
+} 
+
+
+/* previous/default values */
+
 .navbar-laravel {
-  background-color: #2F4F4F !important;
+  background-color: $blue;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
 }
 
@@ -25,15 +34,145 @@
 	color: #fff !important;
 }
 
-.card-header{
-	background-color: #2F4F4F !important;
-	color: #fff;
-}
-
-.card-body{
-	background-color: #D3D3D3;
-}
-
 body{
-	background-color: #778899 !important;
+	color: $white;
+	background-color: $gray;
+}
+
+
+/* define stuff for message view */
+.card-header {
+	background: $header-bg;
+	color: $white;
+}
+.card-body {
+	background: $message-bg;
+}
+.card {
+    margin-top: 50px;
+}
+.chat-btn-active, .chat-btn-inactive {
+    color: $white;
+    border-color: $gray;
+}
+
+.card-header .btn:hover {
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+.chat-btn-active {
+    background-color: $darkblue;
+}
+.chat-btn-inactive {
+    background-color: $lightblue;
+    color: $darkblue;
+}
+
+.chat-btn-inactive .badge {
+	position: relative;
+	margin-left: 10px;
+    background-color: $red;
+    color: $white;
+}
+
+/*chat messages css*/
+.messages ul {
+	width: calc(100% - 7px);
+    padding: 0;
+    list-style: none;
+    /*position: absolute;*/
+	/*bottom: 0;*/
+}
+.messages {
+    height: auto;
+    min-height: calc(100% - 93px);
+    max-height: calc(100% - 93px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    /*padding:10px;*/
+}
+.messages li {
+	color: $message-text;
+    clear: both;
+    padding: 13px 14px 1px 14px;
+    border-radius: 10px;
+    max-width: calc(50% - 10px);
+    line-height: 130%;
+    margin-bottom: 10px;
+}
+
+.messages li:last-child  {
+    margin-bottom: 14px;
+}
+
+.messages .sent {
+    background: $message-sent;
+    float: right;
+}
+
+.messages .recieved {
+    background: $message-recieved;
+    float: left;
+}
+
+.compose {
+	padding-left: -4px;
+	margin-bottom: -14px;
+	width: calc(100% + 30px);
+}
+
+.new-chat input {
+	width: 100px;
+}
+
+.new-chat button {
+	float: right;
+	text-align: left;
+}
+
+.compose input {
+	padding: 5px;
+	width: calc(100% - 50px);
+}
+
+.compose button {
+	outline: none;
+	border: none;
+	width: 50px;
+	background: $darkblue;
+	color: $white;
+}
+
+.compose button:hover {
+	background: $blue;
+}
+
+.header-buttons {
+	float: right !important;
+	text-align: right;
+}
+
+/* hack to remove outline of text */
+textarea, select, input, button { outline: none; }
+button:hover {
+	cursor:pointer;
+}
+
+/* define container padding */
+.py-4 {
+	padding-top: 0px !important;
+}
+main {
+	padding-top: 10px;
+}
+@media (max-width: 768px){
+	.py-4 {
+		margin-top: -50px !important;
+	}
+	.container {
+	    min-width: 100%;
+	    padding-right: 0px;
+	    padding-left: 0px;
+	}
 }

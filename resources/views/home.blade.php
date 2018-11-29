@@ -1,11 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <chats-component></chats-component>
-        <current-chat-component></current-chat-component>
-        <accept-chat-modal></accept-chat-modal>
-    </div>
+<div id="root" class="container">
+	<accept-chat-modal></accept-chat-modal>
+	<div class="card">
+		<!-- header content -->
+		 <div class="card-header">
+	        <div class="row" v-if="chatListVisible">
+	            <chats-component></chats-component>
+	            <header-buttons-component></header-buttons-component>
+	        </div>
+	        <div class="row" v-if="newChatVisible">
+	            <new-chat-component></new-chat-component>
+	            <header-buttons-component></header-buttons-component>
+	        </div>
+	    </div>
+	    <!-- main content -->
+		<main-component></main-component>
+	</div>
 </div>
 @endsection
