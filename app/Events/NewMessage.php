@@ -19,12 +19,13 @@ class NewMessage implements ShouldBroadcast
      *
      * @return void
      */
-    protected $receiver, $message_content;
+    protected $receiver, $message_content, $chat_id;
 
-    public function __construct($receiver, $message_content)
+    public function __construct(string $receiver, string $message_content, int $chat_id)
     {
         $this->receiver = $receiver;
         $this->message_content = $message_content;
+        $this->chat_id = $chat_id;
     }
 
     /**
@@ -44,7 +45,7 @@ class NewMessage implements ShouldBroadcast
      */
     public function broadcastWith()
     {
-        return ['message_body' => $this->message_content];
+        return ['message_body' => $this->message_content, 'chat_id' => $this->chat_id];
     }
 
 

@@ -3,8 +3,8 @@
 <template>
     <div class="messages">
         <ul>
-        	<li v-for="message in messages.data" class="sent">
-        		<p>{{message.message_body}}</p>
+        	<li v-for="message in messages.data" v-bind:class="{'sent': JSON.parse(message.message_body).receiver === currentChatUsername, 'received': JSON.parse(message.message_body).receiver !== currentChatUsername}">
+        		<p>{{JSON.parse(message.message_body).body}}</p>
         	</li>
         </ul>
     </div>
@@ -31,7 +31,15 @@
 
             window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content).listen('NewMessage', (e) => {
                     console.log(e);
-                    this.messages.data.push(e);
+
+                    if (this.currentChatID === e.chat_id) {
+
+                        this.messages.data.push(e);
+                    }
+                    else {
+
+                        //Probably need to add a notification bubble to the other chat to indicate an unread message
+                    }
             });
         },
         data:function(){

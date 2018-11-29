@@ -51,7 +51,7 @@ class MessageController extends Controller
         ]);
 
         //send message to receiving user
-        broadcast(new NewMessage($validatedData["receiver"], $validatedData["message_body"]));
+        broadcast(new NewMessage($validatedData["receiver"], $validatedData["message_body"], $validatedData['chat_id']));
 
         //response to sender
         return response()->json([
