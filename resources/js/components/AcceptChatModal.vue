@@ -60,7 +60,7 @@
             accept() {
 
                 axios({
-                    url: 'http://127.0.0.1:8000/chats',
+                    url: window.location.protocol + "//" + window.location.host + "/" + window.location.pathname.split('/')[1] + '/chats',
                     method: 'post',
                     data: {
                         user2_name: this.withUser,
@@ -80,7 +80,7 @@
             decline() {
 
                 axios({
-                    url: 'http://127.0.0.1:8000/chats',
+                    url: window.location.protocol + "//" + window.location.host + "/" + window.location.pathname.split('/')[1] + '/chats',
                     method: 'post',
                     data: {
                         user2_name: this.withUser,

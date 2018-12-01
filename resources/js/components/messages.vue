@@ -52,7 +52,7 @@
         methods: {
             getChatMessages(chatID){
                 axios({
-                    url: 'http://127.0.0.1:8000/messages',
+                    url: window.location.protocol + "//" + window.location.host + "/" + window.location.pathname.split('/')[1] + '/messages',
                     method: 'post',
                     data: {
                     chat_id: chatID

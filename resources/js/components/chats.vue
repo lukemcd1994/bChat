@@ -29,7 +29,7 @@
         methods: {
             getChats() {
                 axios({
-                    url: 'http://127.0.0.1:8000/chats',
+                    url: window.location.protocol + "//" + window.location.host + "/" + window.location.pathname.split('/')[1] + '/chats',
                     method: 'get'
                 }).then(response => {
                     this.chats = response.data;
