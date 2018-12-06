@@ -29,7 +29,7 @@
         	},
             sendChatMessage(username,chatID,message){ 
                 axios({
-                  	url: window.location.protocol + "//" + window.location.host + "/" + window.location.pathname.split('/')[1] + '/send',
+                  	url: 'http://127.0.0.1:8000/send',
 	              	method: 'post',
               		data: {
                 		receiver: username,
