@@ -17713,11 +17713,11 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_0_vue_js_modal___default.a);
 var EventBus = new Vue();
 
 Object.defineProperties(Vue.prototype, {
-    $bus: {
-        get: function get() {
-            return EventBus;
-        }
-    }
+	$bus: {
+		get: function get() {
+			return EventBus;
+		}
+	}
 });
 
 /**
@@ -17735,30 +17735,28 @@ Vue.component('chats-component', __webpack_require__(100));
 Vue.component('new-chat-component', __webpack_require__(103));
 Vue.component('header-buttons-component', __webpack_require__(106));
 
-// // modal components
+// modal components
 Vue.component('accept-chat-modal', __webpack_require__(109));
 
 var app = new Vue({
-    el: '#root', // for some reason this was app and not root
-    mounted: function mounted() {
-        var _this = this;
+	el: '#root', // for some reason this was app and not root
+	mounted: function mounted() {
+		var _this = this;
 
-        console.log('Test message');
-
-        this.$bus.$on('button-click-1', function (eventData) {
-            _this.chatListVisible = false;
-            _this.newChatVisible = true;
-            _this.chatRequestVisible = false;
-        });
-    },
-    data: {
-
-        chatListVisible: true,
-        newChatVisible: false,
-        chatRequestVisible: false
-
-    },
-    methods: {}
+		this.$bus.$on('new-chat-button', function (eventData) {
+			_this.chatListVisible = false;
+			_this.newChatVisible = true;
+		});
+		this.$bus.$on('start-chat-button', function (eventData) {
+			_this.chatListVisible = true;
+			_this.newChatVisible = false;
+		});
+	},
+	data: {
+		chatListVisible: true,
+		newChatVisible: false,
+		chatRequestVisible: false
+	}
 });
 
 /***/ }),
@@ -58821,6 +58819,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             _this.getChatMessages(chat.id);
             _this.currentChatID = chat.id;
             _this.currentChatUsername = chat.with;
+            _this.setCurrentChat(chat.id);
         });
         this.$bus.$on('send-message-bounce', function (data) {
             _this.$bus.$emit('send-message', { with: _this.currentChatUsername, chat_id: _this.currentChatID });
@@ -58828,12 +58827,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         this.$bus.$on('message-sent', function (data) {
             var temp = { message_body: data };
             _this.messages.data.push(temp);
-            // this.$bus.$emit('send-message', {with: this.currentChatUsername, chat_id: this.currentChatID});
         });
 
         window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content).listen('NewMessage', function (e) {
             console.log(e);
-            _this.messages.data.push(e);
+
+            if (_this.currentChatID === e.chat_id) {
+                _this.messages.data.push(e);
+            } else {
+                // todo for john
+                // <span class="badge badge-light">4</span>
+                // document.getElementById(chatID).className = "btn chat-btn-active";
+                //Probably need to add a notification bubble to the other chat to indicate an unread message
+            }
         });
     },
 
@@ -58845,6 +58851,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         };
     },
     methods: {
+        setCurrentChat: function setCurrentChat(chatID) {
+            var lightBlue = "#BFDBF7";
+            var darkBlue = "#022B3A";
+
+            var items = document.getElementsByClassName('btn chat-btn-active');
+            for (var i = 0; i < items.length; i++) {
+                items[i].className = "btn chat-btn-inactive";
+                console.log('set inactive');
+            }
+
+            document.getElementById(chatID).className = "btn chat-btn-active";
+        },
         getChatMessages: function getChatMessages(chatID) {
             var _this2 = this;
 
@@ -58858,10 +58876,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this2.messages = response.data;
                 console.log(_this2.messages);
             });
-            // this.messages
         }
     }
-
 });
 
 /***/ }),
@@ -58876,9 +58892,20 @@ var render = function() {
     _c(
       "ul",
       _vm._l(_vm.messages.data, function(message) {
-        return _c("li", { staticClass: "sent" }, [
-          _c("p", [_vm._v(_vm._s(message.message_body))])
-        ])
+        return _c(
+          "li",
+          {
+            class: {
+              sent:
+                JSON.parse(message.message_body).receiver ===
+                _vm.currentChatUsername,
+              received:
+                JSON.parse(message.message_body).receiver !==
+                _vm.currentChatUsername
+            }
+          },
+          [_c("p", [_vm._v(_vm._s(JSON.parse(message.message_body).body))])]
+        )
       })
     )
   ])
@@ -58961,7 +58988,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         var _this = this;
 
         console.log('Component mounted.');
-        console.log(this.encodeChatMessage("user2", "timeshit", "CONTENT"));
 
         this.$bus.$on('send-message', function (data) {
             var encoded = _this.encodeChatMessage(data.with, Date.now(), _this.messagebody);
@@ -58977,11 +59003,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     methods: {
         encodeChatMessage: function encodeChatMessage(username, time, message) {
-            return JSON.stringify({ reciever: username, timestamp: time, body: message });
+            return JSON.stringify({ receiver: username, timestamp: time, body: message });
         },
         sendChatMessage: function sendChatMessage(username, chatID, message) {
-            var _this2 = this;
-
             axios({
                 url: 'http://127.0.0.1:8000/send',
                 method: 'post',
@@ -58990,11 +59014,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     message_body: message,
                     chat_id: chatID
                 }
-            }).then(function (response) {
-                _this2.messages = response.data;
-                console.log(_this2.messages);
             });
-            // this.messages
+            this.messagebody = '';
+            $("#send-message-box").focus();
         }
     }
 });
@@ -59017,9 +59039,22 @@ var render = function() {
           expression: "messagebody"
         }
       ],
-      attrs: { type: "text", placeholder: "Send your message..." },
+      attrs: {
+        id: "send-message-box",
+        type: "text",
+        placeholder: "Send your message..."
+      },
       domProps: { value: _vm.messagebody },
       on: {
+        keyup: function($event) {
+          if (
+            !("button" in $event) &&
+            _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")
+          ) {
+            return null
+          }
+          _vm.$bus.$emit("send-message-bounce")
+        },
         input: function($event) {
           if ($event.target.composing) {
             return
@@ -59112,8 +59147,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -59166,7 +59199,7 @@ var render = function() {
         "button",
         {
           staticClass: "btn chat-btn-inactive",
-          attrs: { type: "button" },
+          attrs: { type: "button", id: chat.id },
           on: {
             click: function($event) {
               _vm.$bus.$emit("chat-switched", chat)
@@ -59251,9 +59284,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
-    }
+	mounted: function mounted() {
+		console.log('Component mounted.');
+	},
+
+	data: function data() {
+		return {
+			username: "",
+			endDate: ""
+		};
+	},
+	methods: {
+		requestNewChat: function requestNewChat() {
+			console.log(this.username);
+			console.log(this.endDate);
+
+			axios({
+				url: 'http://127.0.0.1:8000/chats',
+				method: 'post',
+				data: {
+					user2_name: this.username,
+					delete_at: this.endDate
+				}
+			});
+			this.$bus.$emit('start-chat-button');
+		}
+	}
 });
 
 /***/ }),
@@ -59264,18 +59320,70 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "col-md-9 new-chat" }, [
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.username,
+          expression: "username"
+        }
+      ],
+      attrs: { type: "text", placeholder: "username" },
+      domProps: { value: _vm.username },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.username = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c("input", {
+      directives: [
+        {
+          name: "model",
+          rawName: "v-model",
+          value: _vm.endDate,
+          expression: "endDate"
+        }
+      ],
+      attrs: {
+        type: "date",
+        placeholder: "end date",
+        name: "endDate",
+        id: "endDate"
+      },
+      domProps: { value: _vm.endDate },
+      on: {
+        input: function($event) {
+          if ($event.target.composing) {
+            return
+          }
+          _vm.endDate = $event.target.value
+        }
+      }
+    }),
+    _vm._v(" "),
+    _c(
+      "button",
+      {
+        staticClass: "btn chat-btn-active",
+        attrs: { type: "button" },
+        on: {
+          click: function($event) {
+            _vm.requestNewChat()
+          }
+        }
+      },
+      [_vm._v("Request")]
+    )
+  ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-9 new-chat" }, [
-      _c("input", { attrs: { type: "text", placeholder: "username" } })
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
@@ -59346,7 +59454,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     mounted: function mounted() {
@@ -59368,18 +59475,12 @@ var render = function() {
     [
       _c(
         "button",
-        { staticClass: "btn chat-btn-active", attrs: { type: "button" } },
-        [_vm._v("settings")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
         {
           staticClass: "btn chat-btn-active",
           attrs: { type: "button" },
           on: {
             click: function($event) {
-              _vm.$bus.$emit("button-click-1")
+              _vm.$bus.$emit("new-chat-button")
             }
           }
         },
@@ -59870,9 +59971,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        console.log("AcceptChatModal mountedssss...");
-
-        //this.showModal();
+        console.log("AcceptChatModal mounted");
 
         window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content).listen('NewChatRequestedEvent', function (e) {
 

@@ -4,7 +4,6 @@
 	color: $dark-text-color;
 } 
 
-
 /* previous/default values */
 
 .navbar-laravel {
@@ -63,6 +62,7 @@ body{
 
 .chat-btn-active {
     background-color: $darkblue;
+    color: $lightblue;
 }
 .chat-btn-inactive {
     background-color: $lightblue;
@@ -123,7 +123,8 @@ body{
 }
 
 .new-chat input {
-	width: 100px;
+	padding: 5px;
+	width: 150px;
 }
 
 .new-chat button {
@@ -175,4 +176,16 @@ main {
 	    padding-right: 0px;
 	    padding-left: 0px;
 	}
+}
+
+/* handle modal popup colors */
+.v--modal {
+	color: $black;
+	height: auto !important;
+	padding: 20px !important;
+}
+
+.v--modal-box {
+	height: auto !important;
+	padding: 20px;
 }

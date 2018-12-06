@@ -15,11 +15,11 @@ Vue.use(VModal);
 const EventBus = new Vue();
 
 Object.defineProperties(Vue.prototype, {
-    $bus: {
-        get: function () {
-            return EventBus
-        }
-    }
+	$bus: {
+		get: function () {
+			return EventBus
+		}
+	}
 });
 
 /**
@@ -41,13 +41,20 @@ Vue.component('header-buttons-component', require('./components/header-buttons.v
 Vue.component('accept-chat-modal', require('./components/AcceptChatModal.vue'));
 
 const app = new Vue({
-    el: '#root', // for some reason this was app and not root
-    mounted: function () {
-
-    },
-    data: {
-        chatListVisible: true,
-        newChatVisible: false,
-        chatRequestVisible: false
-    }
+	el: '#root', // for some reason this was app and not root
+	mounted: function () {
+		this.$bus.$on('new-chat-button', eventData => {
+				this.chatListVisible = false;
+				this.newChatVisible = true;
+		});
+		this.$bus.$on('start-chat-button', eventData => {
+				this.chatListVisible = true;
+				this.newChatVisible = false;
+		});
+	},
+	data: {
+		chatListVisible: true,
+		newChatVisible: false,
+		chatRequestVisible: false
+	}
 });

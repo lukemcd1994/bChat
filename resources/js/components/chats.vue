@@ -1,6 +1,6 @@
 <template>
     <div class="col-md-9">
-        <button v-for="chat in chats.data" type="button" class="btn chat-btn-inactive" @click="$bus.$emit('chat-switched', chat);">{{chat.with}}</button>
+        <button v-for="chat in chats.data" type="button" class="btn chat-btn-inactive" v-bind:id="chat.id" @click="$bus.$emit('chat-switched', chat);">{{chat.with}}</button>
     </div>
 </template>
 
@@ -29,7 +29,7 @@
         methods: {
             getChats() {
                 axios({
-                    url: window.location.protocol + "//" + window.location.host + "/" + window.location.pathname.split('/')[1] + '/chats',
+                    url: 'http://127.0.0.1:8000/chats',
                     method: 'get'
                 }).then(response => {
                     this.chats = response.data;

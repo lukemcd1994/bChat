@@ -20,6 +20,7 @@
                 this.getChatMessages(chat.id);
                 this.currentChatID = chat.id;
                 this.currentChatUsername = chat.with;
+                this.setCurrentChat(chat.id);
             });
             this.$bus.$on('send-message-bounce', data => {
                 this.$bus.$emit('send-message', {with: this.currentChatUsername, chat_id: this.currentChatID});
@@ -33,11 +34,11 @@
                     console.log(e);
 
                     if (this.currentChatID === e.chat_id) {
-
                         this.messages.data.push(e);
-                    }
-                    else {
-
+                    } else {
+                        // todo for john
+                        // <span class="badge badge-light">4</span>
+                        // document.getElementById(chatID).className = "btn chat-btn-active";
                         //Probably need to add a notification bubble to the other chat to indicate an unread message
                     }
             });
@@ -50,9 +51,22 @@
             }
         },
         methods: {
+            setCurrentChat(chatID){
+                var lightBlue = "#BFDBF7";
+                var darkBlue = "#022B3A";
+
+                var items = document.getElementsByClassName('btn chat-btn-active');
+                for(var i=0; i<items.length; i++) {
+                    items[i].className = "btn chat-btn-inactive";
+                    console.log('set inactive');
+                }
+ 
+                document.getElementById(chatID).className = "btn chat-btn-active";
+
+            },
             getChatMessages(chatID){
                 axios({
-                    url: window.location.protocol + "//" + window.location.host + "/" + window.location.pathname.split('/')[1] + '/messages',
+                    url: 'http://127.0.0.1:8000/messages',
                     method: 'post',
                     data: {
                     chat_id: chatID

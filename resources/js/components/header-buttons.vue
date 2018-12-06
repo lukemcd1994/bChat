@@ -2,8 +2,7 @@
 
 <template>
     <div class="header-buttons col-sm-3 justify-content-right">
-    	<button type="button" class="btn chat-btn-active">settings</button>
-    	<button type="button" class="btn chat-btn-active" @click="$bus.$emit('button-click-1')">new</button>
+    	<button type="button" class="btn chat-btn-active" @click="$bus.$emit('new-chat-button')">new</button>
     </div>
 </template>
 

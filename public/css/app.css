@@ -10535,6 +10535,7 @@ body {
 
 .chat-btn-active {
   background-color: #022B3A;
+  color: #BFDBF7;
 }
 
 .chat-btn-inactive {
@@ -10587,7 +10588,7 @@ body {
   float: right;
 }
 
-.messages .recieved {
+.messages .received {
   background: #E1E5F2;
   float: left;
 }
@@ -10599,7 +10600,8 @@ body {
 }
 
 .new-chat input {
-  width: 100px;
+  padding: 5px;
+  width: 150px;
 }
 
 .new-chat button {
@@ -10662,5 +10664,18 @@ main {
     padding-right: 0px;
     padding-left: 0px;
   }
+}
+
+/* handle modal popup colors */
+
+.v--modal {
+  color: #000;
+  height: auto !important;
+  padding: 20px !important;
+}
+
+.v--modal-box {
+  height: auto !important;
+  padding: 20px;
 }
 
