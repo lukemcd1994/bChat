@@ -6,11 +6,11 @@
 	<div class="card">
 		<!-- header content -->
 		 <div class="card-header">
-	        <div class="row" v-if="chatListVisible">
+	        <div class="row" v-show="chatListVisible">
 	            <chats-component></chats-component>
 	            <header-buttons-component></header-buttons-component>
 	        </div>
-	        <div class="row" v-if="newChatVisible">
+	        <div class="row" v-show="newChatVisible">
 	            <new-chat-component></new-chat-component>
 	            <header-buttons-component></header-buttons-component>
 	        </div>

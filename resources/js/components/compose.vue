@@ -13,9 +13,19 @@
             console.log('Component mounted.');
 
             this.$bus.$on('send-message', data => {
-            	let encoded = this.encodeChatMessage(data.with,Date.now(),this.messagebody);
-            	this.sendChatMessage(data.with,data.chat_id,encoded);
-            	this.$bus.$emit('message-sent',encoded);
+
+				if (document.head.querySelector('meta[name="username"]').content + "." + data.chat_id.toString() in localStorage) {
+
+					let [encoded, plain] = this.encodeChatMessage(data.with, Date.now(), this.messagebody, data.chat_id);
+					this.sendChatMessage(data.with,data.chat_id,encoded);
+					this.$bus.$emit('message-sent',plain);
+				}
+				else {
+
+					this.messagebody = '';
+					$("#send-message-box").focus();
+					alert("ERROR: Can't send message! No encryption key available for this chat!");
+				}
             });
         },
         data: function () {
@@ -24,8 +34,16 @@
             }
         },
         methods: {
-        	encodeChatMessage(username,time,message){
-        		return JSON.stringify({receiver: username, timestamp: time, body: message});
+        	encodeChatMessage(username, time, message, chatID) {
+
+				const cipher = Cipher.createCipher('aes-256-ctr', localStorage.getItem(document.head.querySelector('meta[name="username"]').content + "." + chatID.toString()));
+
+				let encrypted = cipher.update(JSON.stringify({receiver: username, timestamp: time, body: message}), 'utf8', 'hex');
+				encrypted += cipher.final('hex');
+
+				let plain = JSON.stringify({receiver: username, timestamp: time, body: message});
+
+        		return [encrypted, plain];
         	},
             sendChatMessage(username,chatID,message){ 
                 axios({

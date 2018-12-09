@@ -52,3 +52,9 @@ window.Echo = new Echo({
     host: window.location.hostname + ':6001',
     transports: ['websocket', 'polling', 'flashsocket']
 });
+
+window.createECDH = require('create-ecdh/browser');
+window.hkdf = require('futoin-hkdf');
+
+window.Cipher = require('browserify-aes/encrypter');
+window.Decipher = require('browserify-aes/decrypter');
