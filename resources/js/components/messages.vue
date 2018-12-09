@@ -31,16 +31,31 @@
             });
 
             window.Echo.private('App.User.' + document.head.querySelector('meta[name="username"]').content).listen('NewMessage', (e) => {
+                if (this.currentChatID === e.chat_id) {
+
+                    if (document.head.querySelector('meta[name="username"]').content + "." + e.chat_id.toString() in localStorage) {
+
+                        const decipher = Decipher.createDecipher('aes-256-ctr', localStorage.getItem(document.head.querySelector('meta[name="username"]').content + "." + e.chat_id.toString()));
+
+                        let decrypted = decipher.update(e.message_body, 'hex', 'utf8');
+                        decrypted += decipher.final('utf8');
+
+                        e.message_body = decrypted;
+                    }
+                    else {
+
+                        e.message_body = '{"receiver":"NULL","timestamp":"NULL","body":"No encryption key found"}';
+                    }
+
                     console.log(e);
 
-                    if (this.currentChatID === e.chat_id) {
-                        this.messages.data.push(e);
-                    } else {
-                        // todo for john
-                        // <span class="badge badge-light">4</span>
-                        // document.getElementById(chatID).className = "btn chat-btn-active";
-                        //Probably need to add a notification bubble to the other chat to indicate an unread message
-                    }
+                    this.messages.data.push(e);
+                } else {
+                    // todo for john
+                    // <span class="badge badge-light">4</span>
+                    // document.getElementById(chatID).className = "btn chat-btn-active";
+                    //Probably need to add a notification bubble to the other chat to indicate an unread message
+                }
             });
         },
         data:function(){
@@ -52,11 +67,9 @@
         },
         methods: {
             setCurrentChat(chatID){
-                var lightBlue = "#BFDBF7";
-                var darkBlue = "#022B3A";
 
-                var items = document.getElementsByClassName('btn chat-btn-active');
-                for(var i=0; i<items.length; i++) {
+                let items = document.getElementsByClassName('btn chat-btn-active');
+                for(let i=0; i<items.length; i++) {
                     items[i].className = "btn chat-btn-inactive";
                     console.log('set inactive');
                 }
@@ -72,8 +85,26 @@
                     chat_id: chatID
                     },
                 }).then(response => {
-                    this.messages = response.data;
-                    console.log(this.messages);
+
+                    let server_messages = response.data.data;
+
+                    if (document.head.querySelector('meta[name="username"]').content + "." + chatID.toString() in localStorage) {
+
+                        server_messages.forEach(function(item, i) {
+
+                            const decipher = Decipher.createDecipher('aes-256-ctr', localStorage.getItem(document.head.querySelector('meta[name="username"]').content + "." + chatID.toString()));
+
+                            server_messages[i] = {message_body: decipher.update(item.message_body, 'hex', 'utf8') + decipher.final('utf8')}
+                        });
+                    }
+                    else {
+
+                        server_messages.forEach(function(item, i) {
+                            server_messages[i] = {message_body: '{"receiver":"NULL","timestamp":"NULL","body":"No encryption key found"}'};
+                        });
+                    }
+
+                    this.messages = {data: server_messages};
                 });
             }
         }

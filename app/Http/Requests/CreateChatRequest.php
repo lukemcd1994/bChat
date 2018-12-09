@@ -38,6 +38,7 @@ class CreateChatRequest extends FormRequest
                 Rule::exists('users', 'name')->whereNot('name', Auth::user()->name)
             ],
             'delete_at' => 'required|date|after:now',
+            'ecdh_pub' => 'required_unless:pending_method,decline|string|size:266',
             'pending_id' => 'required_with_all:pending_secret,pending_method|integer|exists:chats,id,pending,1',
             'pending_secret' => 'required_with_all:pending_id,pending_method|string|size:23|exists:chats,pending_secret,id,' . $this->request->get('pending_id'),
             'pending_method' =>  [

@@ -58,7 +58,8 @@ class ChatSessionController extends Controller
                     'pending_id' => $newChat->id,
                     'with' => Auth::user()->name,
                     'pending_secret' => $newChat->pending_secret,
-                    'delete_at' => $newChat->delete_at
+                    'delete_at' => $newChat->delete_at,
+                    'ecdh_pub' => $validatedData['ecdh_pub']
                 ]
             ));
 
@@ -79,6 +80,7 @@ class ChatSessionController extends Controller
                         'id' => $validatedData['pending_id'],
                         'delete_at' => date('Y-m-d H:i:s', strtotime($validatedData['delete_at'])),
                         'with' => Auth::user()->name,
+                        'ecdh_pub' => $validatedData['ecdh_pub']
                     ]
                 ));
 

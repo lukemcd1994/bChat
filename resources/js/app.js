@@ -41,7 +41,7 @@ Vue.component('header-buttons-component', require('./components/header-buttons.v
 Vue.component('accept-chat-modal', require('./components/AcceptChatModal.vue'));
 
 const app = new Vue({
-	el: '#root', // for some reason this was app and not root
+	el: '#root',
 	mounted: function () {
 		this.$bus.$on('new-chat-button', eventData => {
 				this.chatListVisible = false;

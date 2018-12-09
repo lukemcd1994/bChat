@@ -24,7 +24,8 @@
                 pendingID: -1,
                 pendingSecret: '',
                 withUser: '',
-                deleteAt: ''
+                deleteAt: '',
+                withECDHPub: ''
             }
         },
         mounted () {
@@ -40,6 +41,7 @@
                     this.withUser = e.with;
                     this.pendingSecret = e.pending_secret;
                     this.deleteAt = e.delete_at;
+                    this.withECDHPub = e.ecdh_pub;
 
                     this.showModal();
                 });
@@ -59,6 +61,8 @@
             },
             accept() {
 
+                const pub = createECDH('secp521r1');
+
                 axios({
                     url: 'http://127.0.0.1:8000/chats',
                     method: 'post',
@@ -67,14 +71,21 @@
                         delete_at: this.deleteAt,
                         pending_id: this.pendingID,
                         pending_secret: this.pendingSecret,
-                        pending_method: "accept"
+                        pending_method: "accept",
+                        ecdh_pub: pub.generateKeys('hex')
                     }
                 }).then(response => {
+
+                    const aes_key = hkdf(pub.computeSecret(this.withECDHPub, 'hex'), 32).toString('hex');
+
+                    localStorage.setItem(document.head.querySelector('meta[name="username"]').content + "." + this.pendingID.toString(), aes_key);
 
                     this.canClose = true;
                     // emit message to show 
                     this.$bus.$emit('user-accepted-chat', {"delete_at": this.deleteAt, "id": this.pendingID, "with": this.withUser});
-                    this.$modal.hide('accept-chat-modal')
+                    this.$modal.hide('accept-chat-modal');
+
+                    this.canClose = false;
                 });
             },
             decline() {
@@ -92,7 +103,8 @@
                 }).then(response => {
 
                     this.canClose = true;
-                    this.$modal.hide('accept-chat-modal')
+                    this.$modal.hide('accept-chat-modal');
+                    this.canClose = false;
                 });
             }
         }
