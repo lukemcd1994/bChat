@@ -1,6 +1,6 @@
 <template>
     <div class="col-md-9 chatslist">
-        <button v-for="chat in chats.data" type="button" class="btn chat-btn-inactive" v-bind:id="chat.id" @click="$bus.$emit('chat-switched', chat);">{{chat.with}}</button>
+        <button v-for="chat in chats.data" type="button" class="btn chat-btn-inactive" v-bind:id="chat.id" @click="$bus.$emit('chat-switched', chat);">{{chat.with}} <span class="unread-indicator badge badge-light" style="display: none;">0</span></button>
     </div>
 </template>
 

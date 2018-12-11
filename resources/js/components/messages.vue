@@ -61,6 +61,14 @@
 
                     this.messages.data.push(e);
                 } else {
+                    // console.log('processing background message');
+                    var counter = document.getElementById(e.chat_id).getElementsByTagName("span")[0];
+                    var count = parseInt(counter.textContent);
+                    count += 1;
+                    counter.textContent = count;
+                    counter.style.cssText = "display: auto;";
+
+                    
                     // todo for john
                     // <span class="badge badge-light">4</span>
                     // document.getElementById(chatID).className = "btn chat-btn-active";
@@ -78,13 +86,20 @@
         },
         methods: {
             setCurrentChat(chatID){
-
                 let items = document.getElementsByClassName('btn chat-btn-active');
                 for(let i=0; i<items.length; i++) {
                     items[i].className = "btn chat-btn-inactive";
                     console.log('set inactive');
                 }
                 document.getElementById(chatID).className = "btn chat-btn-active";
+
+                // set the counter to 0 and hide the element
+                var counter = document.getElementById(chatID).getElementsByTagName("span")[0];
+                counter.textContent = '0';
+                counter.style.cssText = "display: none;";
+
+                // scroll to the bottom of the chat
+                
 
             },
             formatTimestamp(timestamp,utc_offset){

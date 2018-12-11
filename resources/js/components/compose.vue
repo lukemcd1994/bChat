@@ -3,7 +3,7 @@
 <template>
 	<div class="compose row">
 		<input id="send-message-box" v-on:keyup.enter="$bus.$emit('send-message-bounce')" v-model="messagebody" type="text" placeholder="Send your message...">
-		<button @click="$bus.$emit('send-message-bounce')">Send</button>
+		<button class="btn chat-btn-important" @click="$bus.$emit('send-message-bounce')">Send</button>
 	</div>
 </template>
 
