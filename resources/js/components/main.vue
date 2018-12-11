@@ -1,4 +1,4 @@
-<!-- contains all content bescides the header -->
+<!-- contains all content besides the header -->
 
 <template>
     <div class="card-body">

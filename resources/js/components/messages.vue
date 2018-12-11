@@ -1,10 +1,15 @@
 <!-- shows a list of messages -->
 
 <template>
-    <div class="messages">
+    <div class="messages" id="messagebox">
         <ul>
-        	<li v-for="message in messages.data" v-bind:class="{'sent': JSON.parse(message.message_body).receiver === currentChatUsername, 'received': JSON.parse(message.message_body).receiver !== currentChatUsername}">
-        		<p>{{JSON.parse(message.message_body).body}}</p>
+            <li v-if="this.currentChatUsername" class="description">This chat with {{ this.currentChatUsername }} expires at {{ this.formatTimestamp(this.currentChatExperation,-7) }}</li>
+            <li v-if="this.currentChatExperation == null" class="description">No Chat Selected</li>
+
+        	<li v-for="message in messages.data" v-bind:class="{'sent': (JSON.parse(message.message_body).receiver === currentChatUsername), 
+                                                                'received': (JSON.parse(message.message_body).receiver !== currentChatUsername && JSON.parse(message.message_body).body !== 'No encryption key found'), 
+                                                                'description': JSON.parse(message.message_body).body === 'No encryption key found'}">
+        		<p :title="formatTimestamp(JSON.parse(message.message_body).timestamp,-7)">{{JSON.parse(message.message_body).body}}</p>
         	</li>
         </ul>
     </div>
@@ -20,10 +25,16 @@
                 this.getChatMessages(chat.id);
                 this.currentChatID = chat.id;
                 this.currentChatUsername = chat.with;
+                this.currentChatExperation = chat.delete_at + " GMT"; // added gmt to fix timezone issues
                 this.setCurrentChat(chat.id);
             });
             this.$bus.$on('send-message-bounce', data => {
                 this.$bus.$emit('send-message', {with: this.currentChatUsername, chat_id: this.currentChatID});
+
+                    var container = $('#messagebox')[0];
+
+                    container.scrollTop = container.scrollHeight + 500;
+
             });
             this.$bus.$on('message-sent', data => {
                 let temp = {message_body: data};
@@ -43,7 +54,6 @@
                         e.message_body = decrypted;
                     }
                     else {
-
                         e.message_body = '{"receiver":"NULL","timestamp":"NULL","body":"No encryption key found"}';
                     }
 
@@ -62,7 +72,8 @@
             return {
                 messages: [],
                 currentChatID: null,
-                currentChatUsername: null
+                currentChatUsername: null,
+                currentChatExperation: null,
             }
         },
         methods: {
@@ -73,9 +84,20 @@
                     items[i].className = "btn chat-btn-inactive";
                     console.log('set inactive');
                 }
- 
                 document.getElementById(chatID).className = "btn chat-btn-active";
 
+            },
+            formatTimestamp(timestamp,utc_offset){
+
+                var timestamp = new Date(timestamp);
+                var now = new Date();
+
+                if(timestamp.getDate() == now.getDate()){
+                    // chat is today, return the non-day string
+                    return timestamp.toLocaleTimeString();
+                } else {
+                    return timestamp.toLocaleString();
+                }
             },
             getChatMessages(chatID){
                 axios({

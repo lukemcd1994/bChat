@@ -10515,6 +10515,9 @@ body {
 
 .card-body {
   background: #FFFFFF;
+  padding: 0px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .card {
@@ -10522,8 +10525,9 @@ body {
 }
 
 .chat-btn-active,
-.chat-btn-inactive {
-  color: #FFFFFF;
+.chat-btn-inactive,
+.chat-btn-important {
+  /*color: $white;*/
   border-color: #E1E5F2;
 }
 
@@ -10533,7 +10537,8 @@ body {
   /* For IE8 and earlier */
 }
 
-.chat-btn-active {
+.chat-btn-active,
+.chat-btn-important {
   background-color: #022B3A;
   color: #BFDBF7;
 }
@@ -10553,7 +10558,7 @@ body {
 /*chat messages css*/
 
 .messages ul {
-  width: calc(100% - 7px);
+  /*width: calc(100% - 7px);*/
   padding: 0;
   list-style: none;
   /*position: absolute;*/
@@ -10561,9 +10566,13 @@ body {
 }
 
 .messages {
+  padding-top: 10px;
   height: auto;
-  min-height: calc(100% - 93px);
-  max-height: calc(100% - 93px);
+  min-height: 300px;
+  /* min-height: calc(100% - 93px);
+    max-height: calc(100% - 93px);*/
+  max-height: calc(100vh - 300px);
+  overflow: auto;
   overflow-y: scroll;
   overflow-x: hidden;
   /*padding:10px;*/
@@ -10572,6 +10581,7 @@ body {
 .messages li {
   color: #022B3A;
   clear: both;
+  padding-left: 15px;
   padding: 13px 14px 1px 14px;
   border-radius: 10px;
   max-width: calc(50% - 10px);
@@ -10581,6 +10591,19 @@ body {
 
 .messages li:last-child {
   margin-bottom: 14px;
+}
+
+.messages .description {
+  width: 100%;
+  text-align: center;
+  color: #022B3A;
+  clear: both;
+  padding-left: 15px;
+  padding: 13px 14px 1px 14px;
+  border-radius: 10px;
+  max-width: 100%;
+  line-height: 130%;
+  margin-bottom: 10px;
 }
 
 .messages .sent {
@@ -10599,9 +10622,32 @@ body {
   width: calc(100% + 30px);
 }
 
-.new-chat input {
-  padding: 5px;
-  width: 150px;
+.new-chat .username,
+.enddate {
+  padding: 4px;
+  height: 37px;
+  display: inline-block;
+  /*font-weight: 400;*/
+  /*text-align: center;*/
+  white-space: nowrap;
+  vertical-align: middle;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  border-radius: 0.25rem;
+}
+
+.new-chat .username {
+  width: 100%;
+}
+
+.new-chat .enddate {
+  width: 250px;
 }
 
 .new-chat button {
@@ -10610,8 +10656,9 @@ body {
 }
 
 .compose input {
+  margin-left: 5px;
   padding: 5px;
-  width: calc(100% - 50px);
+  width: calc(100% - 60px);
 }
 
 .compose button {
@@ -10629,6 +10676,10 @@ body {
 .header-buttons {
   float: right !important;
   text-align: right;
+}
+
+.chatslist button {
+  margin-right: 10px;
 }
 
 /* hack to remove outline of text */
@@ -10663,6 +10714,28 @@ main {
     min-width: 100%;
     padding-right: 0px;
     padding-left: 0px;
+  }
+
+  .messages {
+    max-height: calc(100vh - 217px);
+  }
+
+  .new-chat input {
+    width: 100% !important;
+  }
+
+  .new-chat .username,
+  .enddate {
+    margin-bottom: 10px;
+  }
+
+  .card {
+    border-radius: 0px;
+    border-top: 0px;
+  }
+
+  .header-buttons .chat-btn-important {
+    margin-top: 10px;
   }
 }
 

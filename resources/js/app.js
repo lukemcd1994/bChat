@@ -46,13 +46,16 @@ const app = new Vue({
 		this.$bus.$on('new-chat-button', eventData => {
 				this.chatListVisible = false;
 				this.newChatVisible = true;
+				this.headerButtonsVisible = false;
 		});
 		this.$bus.$on('start-chat-button', eventData => {
 				this.chatListVisible = true;
 				this.newChatVisible = false;
+				this.headerButtonsVisible = true;
 		});
 	},
 	data: {
+		headerButtonsVisible: true,
 		chatListVisible: true,
 		newChatVisible: false,
 		chatRequestVisible: false

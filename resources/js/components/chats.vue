@@ -1,5 +1,5 @@
 <template>
-    <div class="col-md-9">
+    <div class="col-md-9 chatslist">
         <button v-for="chat in chats.data" type="button" class="btn chat-btn-inactive" v-bind:id="chat.id" @click="$bus.$emit('chat-switched', chat);">{{chat.with}}</button>
     </div>
 </template>

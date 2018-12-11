@@ -1,8 +1,17 @@
 <template>
-	<div class="col-md-9 new-chat">
-		<input v-model="username" type="text" placeholder="username">
-		<input v-model="endDate" type="date" placeholder="end date" name="endDate" id="endDate">
-		<button type="button" class="btn chat-btn-active" @click="requestNewChat()">Request</button>
+	<div class="row new-chat" style="margin-left:0px;width: 100% !important;">
+		<div class="col-md-2">
+			<input v-model="username" class="username" id="username-text" type="text" placeholder="username">
+			<!-- <input v-model="endDate" class="enddate" type="datetime-local" placeholder="end date" name="endDate" id="endDate"> -->
+		</div>
+		<div class="col-md-6">
+			<!-- <input v-model="username" class="username" type="text" placeholder="username"> -->
+			<input v-model="endDate" class="enddate" type="datetime-local" placeholder="end date" name="endDate" id="endDate">
+		</div>
+		<div class="col-md-4 justify-content-right">
+			<button type="button" class="btn chat-btn-important" id="submit-new-chat" @click="requestNewChat()">Request</button>
+			<button type="button" class="btn chat-btn-inactive" style="margin-right:10px;" @click="cancelNewChat()">Cancel</button>
+		</div>
 	</div>
 </template>
 
@@ -28,10 +37,15 @@
             }
         },
 		methods: {
-
+			cancelNewChat(){
+				this.$bus.$emit('start-chat-button');
+			},
 			requestNewChat(){
 				console.log(this.username);
 				console.log(this.endDate);
+
+				// format properly to get times working
+				this.endDate = (new Date(this.endDate)).toUTCString()
 
 				const pub = createECDH('secp521r1');
 

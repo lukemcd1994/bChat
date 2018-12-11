@@ -12,7 +12,7 @@
 	        </div>
 	        <div class="row" v-show="newChatVisible">
 	            <new-chat-component></new-chat-component>
-	            <header-buttons-component></header-buttons-component>
+	            <!-- <header-buttons-component></header-buttons-component> -->
 	        </div>
 	    </div>
 	    <!-- main content -->

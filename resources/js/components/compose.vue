@@ -13,7 +13,7 @@
             console.log('Component mounted.');
 
             this.$bus.$on('send-message', data => {
-
+                this.messagebody = this.removeEmoji(this.messagebody);
 				if (document.head.querySelector('meta[name="username"]').content + "." + data.chat_id.toString() in localStorage) {
 
 					let [encoded, plain] = this.encodeChatMessage(data.with, Date.now(), this.messagebody, data.chat_id);
@@ -34,6 +34,9 @@
             }
         },
         methods: {
+            removeEmoji(message){
+                return message.replace(/([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g, '');
+            },
         	encodeChatMessage(username, time, message, chatID) {
 
 				const cipher = Cipher.createCipher('aes-256-ctr', localStorage.getItem(document.head.querySelector('meta[name="username"]').content + "." + chatID.toString()));
@@ -56,6 +59,7 @@
               		},
 	            });
                 this.messagebody = '';
+                // keep cursor in the text box
                 $("#send-message-box").focus();
             }
         }
