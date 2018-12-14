@@ -1,11 +1,15 @@
 # bChat
+
 **About**:
 - bChat is a chat platform which allows users to create simple and secure self-deleting chat sessions
+
 **Mission Statement**: 
 - We wanted to fill the desire for simplicity and security in users who have grown weary of convoluted modern communication software by providing a fast, simple, and secure solution. 
+
 **Security Features**:
 - End-to-end encrypted chats 
 - Timed deletion of chats
+
 **Orginization**: This project follows the [standard Laravel dependency structure](https://laravel.com/docs/5.7/structure). 
 
 ## Requirements (macOS)
