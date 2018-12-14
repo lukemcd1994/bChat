@@ -46,7 +46,11 @@ composer install
 ```bash
 php artisan migrate:install
 ```
-8. Install yarn requirements
+8. Run the database migrations using 
+```bash
+php artisan migrate
+```
+9. Install yarn requirements
 ```
 yarn install
 ```
